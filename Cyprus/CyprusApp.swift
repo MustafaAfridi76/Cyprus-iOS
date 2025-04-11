@@ -32,15 +32,19 @@ struct CyprusApp: App {
     var body: some Scene {
         WindowGroup {
             if session.isLoggedIn {
-                SubmitReportView()
-                    .environmentObject(session)
-                // i want to add it here so it goes there right after auth view
-//                HomeView(session: session) // ⬅️ Replace with your main view
+                if session.isAdmin {
+                    AdminDashboardView()
+                        .environmentObject(session)
+                } else {
+                    SubmitReportView()
+                        .environmentObject(session)
+                }
             } else {
                 AuthView()
                     .environmentObject(session)
             }
         }
+
     }
 
   }

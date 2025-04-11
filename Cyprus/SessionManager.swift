@@ -11,10 +11,17 @@ import FirebaseAuth
 
 class SessionManager: ObservableObject {
     @Published var isLoggedIn = false
+    @Published var isAdmin = false
+    private let adminUID = "bqSXFORzAoUL8J1naTpsr58Lsmt2"
+
 
     init() {
-        self.isLoggedIn = Auth.auth().currentUser != nil
+        if let user = Auth.auth().currentUser {
+            self.isLoggedIn = true
+            self.isAdmin = user.uid == adminUID
+        }
     }
+
 
     func logout() {
         do {
@@ -26,6 +33,9 @@ class SessionManager: ObservableObject {
     }
 
     func loginSucceeded() {
-        isLoggedIn = true
+        if let user = Auth.auth().currentUser {
+            self.isLoggedIn = true
+            self.isAdmin = user.uid == adminUID
+        }
     }
 }

@@ -59,23 +59,21 @@ class ReportService {
             completion(reports)
         }
     }
-    // 🚀 TEST METHOD: Sends a dummy report to Firestore
-//    func submitDummyReport() {
-//        let testReport = Report(
-//            title: "Broken Bench",
-//            description: "Bench at Trinity Bellwoods is missing slats.",
-//            timestamp: Date(),
-//            latitude: 43.645,       // Toronto coords for example
-//            longitude: -79.395,
-//            status: "pending"
-//        )
-//
-//        do {
-//            _ = try db.collection("Reports").addDocument(from: testReport)
-//            print("✅ Dummy report submitted!")
-//        } catch {
-//            print("❌ Error submitting dummy report: \(error.localizedDescription)")
-//        }
-//    }
 
 }
+import CoreLocation
+
+extension CLLocationCoordinate2D {
+    func distance(to other: CLLocationCoordinate2D) -> CLLocationDistance {
+        let loc1 = CLLocation(latitude: self.latitude, longitude: self.longitude)
+        let loc2 = CLLocation(latitude: other.latitude, longitude: other.longitude)
+        return loc1.distance(from: loc2)
+    }
+}
+
+func titlesAreSimilar(_ title1: String, _ title2: String) -> Bool {
+    let t1 = title1.lowercased()
+    let t2 = title2.lowercased()
+    return t1.contains(t2) || t2.contains(t1)
+}
+
